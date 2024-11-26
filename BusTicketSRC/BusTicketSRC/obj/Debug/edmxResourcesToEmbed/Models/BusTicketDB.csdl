@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BusTicketModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Booking">
+    <Key>
+      <PropertyRef Name="booking_id" />
+    </Key>
+    <Property Name="booking_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="customer_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="phone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="bus_id" Type="Int32" />
+    <Property Name="trip_id" Type="Int32" />
+    <Property Name="booking_date" Type="DateTime" Precision="3" />
+    <Property Name="departure_day" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="departure_time" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="seat_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Bus" Relationship="Self.FK__Booking__bus_id__44952D46" FromRole="Booking" ToRole="Bus" />
+    <NavigationProperty Name="Trip" Relationship="Self.FK__Booking__trip_id__4589517F" FromRole="Booking" ToRole="Trip" />
+    <NavigationProperty Name="Tickets" Relationship="Self.FK__Ticket__booking___51EF2864" FromRole="Booking" ToRole="Ticket" />
+  </EntityType>
+  <EntityType Name="Bus">
+    <Key>
+      <PropertyRef Name="bus_id" />
+    </Key>
+    <Property Name="bus_id" Type="Int32" Nullable="false" />
+    <Property Name="bus_type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="capacity" Type="Int32" />
+    <Property Name="plate_number" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="other_bus_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Bookings" Relationship="Self.FK__Booking__bus_id__44952D46" FromRole="Bus" ToRole="Booking" />
+    <NavigationProperty Name="Tickets" Relationship="Self.FK__Ticket__bus_id__53D770D6" FromRole="Bus" ToRole="Ticket" />
+    <NavigationProperty Name="Trips" Relationship="Self.FK__Trip__bus_id__73852659" FromRole="Bus" ToRole="Trip" />
+  </EntityType>
+  <EntityType Name="PhanQuyen">
+    <Key>
+      <PropertyRef Name="IDQuyen" />
+    </Key>
+    <Property Name="IDQuyen" Type="Int32" Nullable="false" />
+    <Property Name="TenQuyen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Ticket">
+    <Key>
+      <PropertyRef Name="ticket_id" />
+    </Key>
+    <Property Name="ticket_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="booking_id" Type="Int32" />
+    <Property Name="customer_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="trip_id" Type="Int32" />
+    <Property Name="bus_id" Type="Int32" />
+    <Property Name="seat_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="age" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="price" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="purchase_date" Type="DateTime" Precision="3" />
+    <Property Name="departure_day" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="departure_time" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="payment_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Booking" Relationship="Self.FK__Ticket__booking___51EF2864" FromRole="Ticket" ToRole="Booking" />
+    <NavigationProperty Name="Bus" Relationship="Self.FK__Ticket__bus_id__53D770D6" FromRole="Ticket" ToRole="Bus" />
+    <NavigationProperty Name="Trip" Relationship="Self.FK__Ticket__trip_id__52E34C9D" FromRole="Ticket" ToRole="Trip" />
+  </EntityType>
+  <EntityType Name="Trip">
+    <Key>
+      <PropertyRef Name="trip_id" />
+    </Key>
+    <Property Name="trip_id" Type="Int32" Nullable="false" />
+    <Property Name="bus_id" Type="Int32" />
+    <Property Name="start_location" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="end_location" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="distance" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="departure_time" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="departure_day" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="other_trip_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="BusType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="SeatsAvailable" Type="Int32" />
+    <NavigationProperty Name="Bookings" Relationship="Self.FK__Booking__trip_id__4589517F" FromRole="Trip" ToRole="Booking" />
+    <NavigationProperty Name="Bus" Relationship="Self.FK__Trip__bus_id__73852659" FromRole="Trip" ToRole="Bus" />
+    <NavigationProperty Name="Tickets" Relationship="Self.FK__Ticket__trip_id__52E34C9D" FromRole="Trip" ToRole="Ticket" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="phone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK__Booking__bus_id__44952D46">
+    <End Role="Bus" Type="Self.Bus" Multiplicity="0..1" />
+    <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bus">
+        <PropertyRef Name="bus_id" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="bus_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Booking__trip_id__4589517F">
+    <End Role="Trip" Type="Self.Trip" Multiplicity="0..1" />
+    <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trip">
+        <PropertyRef Name="trip_id" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="trip_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ticket__booking___51EF2864">
+    <End Role="Booking" Type="Self.Booking" Multiplicity="0..1" />
+    <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Booking">
+        <PropertyRef Name="booking_id" />
+      </Principal>
+      <Dependent Role="Ticket">
+        <PropertyRef Name="booking_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ticket__bus_id__53D770D6">
+    <End Role="Bus" Type="Self.Bus" Multiplicity="0..1" />
+    <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bus">
+        <PropertyRef Name="bus_id" />
+      </Principal>
+      <Dependent Role="Ticket">
+        <PropertyRef Name="bus_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Trip__bus_id__73852659">
+    <End Role="Bus" Type="Self.Bus" Multiplicity="0..1" />
+    <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bus">
+        <PropertyRef Name="bus_id" />
+      </Principal>
+      <Dependent Role="Trip">
+        <PropertyRef Name="bus_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ticket__trip_id__52E34C9D">
+    <End Role="Trip" Type="Self.Trip" Multiplicity="0..1" />
+    <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trip">
+        <PropertyRef Name="trip_id" />
+      </Principal>
+      <Dependent Role="Ticket">
+        <PropertyRef Name="trip_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="BusTicketEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Bookings" EntityType="Self.Booking" />
+    <EntitySet Name="Buses" EntityType="Self.Bus" />
+    <EntitySet Name="PhanQuyens" EntityType="Self.PhanQuyen" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Tickets" EntityType="Self.Ticket" />
+    <EntitySet Name="Trips" EntityType="Self.Trip" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK__Booking__bus_id__44952D46" Association="Self.FK__Booking__bus_id__44952D46">
+      <End Role="Bus" EntitySet="Buses" />
+      <End Role="Booking" EntitySet="Bookings" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Booking__trip_id__4589517F" Association="Self.FK__Booking__trip_id__4589517F">
+      <End Role="Trip" EntitySet="Trips" />
+      <End Role="Booking" EntitySet="Bookings" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ticket__booking___51EF2864" Association="Self.FK__Ticket__booking___51EF2864">
+      <End Role="Booking" EntitySet="Bookings" />
+      <End Role="Ticket" EntitySet="Tickets" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ticket__bus_id__53D770D6" Association="Self.FK__Ticket__bus_id__53D770D6">
+      <End Role="Bus" EntitySet="Buses" />
+      <End Role="Ticket" EntitySet="Tickets" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Trip__bus_id__73852659" Association="Self.FK__Trip__bus_id__73852659">
+      <End Role="Bus" EntitySet="Buses" />
+      <End Role="Trip" EntitySet="Trips" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ticket__trip_id__52E34C9D" Association="Self.FK__Ticket__trip_id__52E34C9D">
+      <End Role="Trip" EntitySet="Trips" />
+      <End Role="Ticket" EntitySet="Tickets" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

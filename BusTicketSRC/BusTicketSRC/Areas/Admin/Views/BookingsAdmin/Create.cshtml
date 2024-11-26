@@ -1,0 +1,192 @@
+﻿@model BusTicketSRC.Models.Booking
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Booking</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.customer_name, "Customer Name:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.customer_name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.customer_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.phone, "Phone Number:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.trip_id, "Bus Trip:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("trip_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.trip_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.seat_number, "Seat Number:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.seat_number, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.seat_number, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.age, "Birth Day:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" id="age" name="age" class="form-control" />
+                @Html.ValidationMessageFor(model => model.age, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.booking_price, "Booking Price:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.booking_price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.booking_price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ticket_id, "Ticket Status:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ticket_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ticket_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function validateForm() {
+            var age = document.getElementById("age");
+            var departureDay = document.getElementById("departure_day");
+            var departureTime = document.getElementById("departure_time");
+            var seatNumberInput = document.getElementById("seat_number");
+
+            if (
+                age.value === "" ||
+                departureDay.value === "" ||
+                departureTime.value === "" ||
+                seatNumberInput.value === ""
+            ) {
+                alert("Please fill out all required fields, including Seat Number.");
+                return false;
+            }
+
+            var ageValue = parseInt(age.value, 10);
+            if (isNaN(ageValue) || ageValue < 6) {
+                alert("Age must be 6 years or older.");
+                age.value = "";
+                return false;
+            }
+
+            var seatNumber = parseInt(seatNumberInput.value, 10);
+            if (!isSeatNumberValid(seatNumber)) {
+                alert("Seat number must be a whole number between 1 and 32.");
+                seatNumberInput.value = "";
+                return false;
+            }
+
+            return true;
+        }
+
+       
+
+        function CalculateAge(dateOfBirth) {
+            // Parse the input date string with the format dd/mm/yyyy
+            var parts = dateOfBirth.split("/");
+            var day = parseInt(parts[0], 10);
+            var month = parseInt(parts[1], 10) - 1; // Adjust month (0-indexed)
+            var year = parseInt(parts[2], 10);
+
+            var today = new Date();
+            var birthDate = new Date(year, month, day);
+            var age = today.getFullYear() - birthDate.getFullYear();
+
+            // Check if the birthday hasn't occurred yet this year
+            if (birthDate.getMonth() > today.getMonth() ||
+                (birthDate.getMonth() === today.getMonth() && birthDate.getDate() > today.getDate())) {
+                age--;
+            }
+
+            return age;
+        }
+
+        var form = document.querySelector('form');
+        form.addEventListener('submit', function (event) {
+            if (!validateForm()) {
+                event.preventDefault();
+            }
+        });
+
+        // Enable flatpickr for departure_day, age, and departure_time
+        flatpickr("#departure_day", {
+            dateFormat: "d/m/Y",
+        });
+
+        flatpickr("#age", {
+            dateFormat: "d/m/Y",
+        });
+
+        flatpickr("#departure_time", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+        });
+
+        // Attach an event listener to the seat_number input
+        var seatNumberInput = document.getElementById("seat_number");
+        seatNumberInput.addEventListener('blur', function () {
+            var tripId = $("#trip_id").val();
+            var seatNumber = seatNumberInput.value;
+
+            if (tripId && seatNumber) {
+                $.ajax({
+                    url: '/Admin/BookingsAdmin/IsSeatNumberAvailable',
+                    type: 'GET',
+                    data: { tripId: tripId, seatNumber: seatNumber },
+                    success: function (result) {
+                        if (!result) {
+                            alert('Seat has been selected or is invalid.');
+                            seatNumberInput.value = "";
+                        }
+                    },
+                    error: function () {
+                        console.error('Error checking seat number availability.');
+                    }
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<BusTicketSRC.Models.Bus>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Bus Management</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+          Bus Type
+        </th>
+        <th>
+            Capacity
+        </th>
+        <th>
+            Plate Number
+        </th>
+        <th>
+            Other Bus Details
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.bus_type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.capacity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.plate_number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.other_bus_details)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.bus_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.bus_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.bus_id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,88 @@
+﻿@model IEnumerable<BusTicketSRC.Models.Booking>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Booking Management</h2>
+
+
+<form id="searchForm" action="@Url.Action("Index", "BookingsAdmin")" method="get" onsubmit="return validateSearchForm()">
+
+    <label for="search" class="mx-2 my-1">Search</label>
+    <input type="search"
+           class="form-control w-auto"
+           id="search"
+           name="search"
+           placeholder="Search" />
+
+    <button type="submit" class="btn btn-primary mx-2">GO</button>
+</form>
+<table class="table">
+    <tr>
+        <th>
+          Ticket Status
+        </th>
+        <th>
+         Code Trips
+        </th>
+        <th>
+            User Name
+        </th>
+        <th>
+           Phone
+        </th>
+       
+        <th>
+            Booking Date
+        </th>
+    
+        <th>
+            Seat Number
+        </th>
+        <th>
+           Birth Day
+        </th>
+        <th>
+            Booking Price
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ticket.ticket_status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Trip.trip_id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.customer_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone)
+        </td>
+      
+        <td>
+            @Html.DisplayFor(modelItem => item.booking_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.seat_number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.age)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.booking_price)$
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.booking_id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.booking_id })
+
+        </td>
+    </tr>
+}
+
+</table>

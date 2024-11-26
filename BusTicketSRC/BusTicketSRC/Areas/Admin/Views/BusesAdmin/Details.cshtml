@@ -1,0 +1,48 @@
+﻿@model BusTicketSRC.Models.Bus
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Bus</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Bus Type:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.bus_type)
+        </dd>
+
+        <dt>
+            Capacity:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.capacity)
+        </dd>
+
+        <dt>
+            Plate Number:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.plate_number)
+        </dd>
+
+        <dt>
+            Other Bus Details:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.other_bus_details)
+        </dd>
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.bus_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

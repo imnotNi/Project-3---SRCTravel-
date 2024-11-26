@@ -1,0 +1,184 @@
+﻿@model IEnumerable<BusTicketSRC.Models.Trip>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<h2>Trip Management</h2>
+<style>
+    #searchForm {
+        display: flex;
+        align-items: center;
+    }
+
+    label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .select-container {
+        position: relative;
+    }
+
+        .select-container select {
+            width: 200px;
+            padding: 10px;
+            border: none;
+            border-bottom: 2px solid #007bff;
+            border-radius: 0;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-bottom-color 0.3s ease;
+        }
+
+            .select-container select:focus {
+                border-bottom-color: #0056b3;
+            }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: 2px solid #007bff;
+        border-radius: 4px;
+        padding: 10px 15px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+    .table-container {
+        width: 80%;
+        margin: 20px auto 0;
+    }
+</style>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<div class="form-container">
+    <form id="searchForm" action="@Url.Action("Index", "TripsAdmin")" method="get" onsubmit="return validateSearchForm()">
+        <div class="select-container">
+            <label for="start_locationSearch">Source</label>
+            <select class="form-control" id="start_locationSearch" name="start_locationSearch">
+                <option value="">Select Source</option>
+                @if (ViewBag.Start_locationOptions != null)
+                {
+                    foreach (var start_locationOption in ViewBag.Start_locationOptions)
+                    {
+                        <option value="@start_locationOption">@start_locationOption</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="select-container">
+            <label for="end_locationSearch">Destination</label>
+            <select class="form-control" id="end_locationSearch" name="end_locationSearch">
+                <option value="">Select Destination</option>
+                @if (ViewBag.Start_locationOptions != null)
+                {
+                    foreach (var end_locationOption in ViewBag.End_locationOptions)
+                    {
+                        <option value="@end_locationOption">@end_locationOption</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="select-container">
+            <label for="departure_daySearch">Departure Time</label>
+            <input type="text" class="form-control" id="departure_daySearch" name="departure_daySearch">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+<script>
+        flatpickr("#departure_daySearch", {
+            dateFormat: "d/m/Y",  // Định dạng ngày/tháng/năm
+        });
+
+        function validateSearchForm() {
+            var start_locationValue = document.getElementById("start_locationSearch").value.trim();
+            var end_locationValue = document.getElementById("end_locationSearch").value.trim();
+            var departure_dayValue = document.getElementById("departure_daySearch").value.trim();
+
+            if (start_locationValue === "" && end_locationValue === "" && departure_dayValue === "") {
+                alert("Please select values for source, destination, and departure day.");
+                return false;
+            }
+
+            return true;
+        }
+</script>
+<table class="table">
+    <tr>
+        <th>
+            Code Trips
+        </th>
+        <th>
+           Bus Type
+        </th>
+        <th>
+            Start Location
+        </th>
+        <th>
+            End Location
+        </th>
+        <th>
+           Distance
+        </th>
+        <th>
+            Departure Time
+        </th>
+        <th>
+            Departure Day
+        </th>
+        <th>
+            Price
+        </th>
+     
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.trip_id)
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bus.bus_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.start_location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.end_location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.distance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.departure_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.departure_day)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)$
+            </td>
+         
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.trip_id, bus_id = item.bus_id, start_location = item.start_location, end_location = item.end_location, distance = item.distance, departure_time = item.departure_time, departure_day = item.departure_day, Price = item.Price, other_trip_details = item.other_trip_details })
+                @Html.ActionLink("Details", "Details", new { id = item.trip_id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.trip_id })
+            </td>
+        </tr>
+    }
+
+</table>

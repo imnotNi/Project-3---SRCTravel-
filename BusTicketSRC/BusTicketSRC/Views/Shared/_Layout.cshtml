@@ -1,0 +1,79 @@
+﻿@using BusTicketSRC.Shared
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link rel="stylesheet" href="~/Content/Site.css" />
+
+    <!-- Thêm vào phần head của trang -->
+    <script src="https://unpkg.com/split-type"></script>
+
+    <!-- Thêm vào phần head của trang, sau khi đã thêm split-text.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var textElement = document.querySelector('.header-text p');
+            var splitText = new SplitType(textElement);
+
+            textElement.addEventListener('mouseover', function () {
+                splitText.split({ type: 'words', charsClass: 'char' });
+            });
+
+            textElement.addEventListener('mouseout', function () {
+                splitText.reset();
+            });
+        });
+    </script>
+
+
+</head>
+<body>
+
+    <div class="header-text">
+        <p>SRC Travel</p>
+    </div>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav flex-row">
+
+                    <li class="nav-item">@Html.ActionLink("Trang chủ", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Thanh Toán ", "BookingList", "Bookings", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Liên Hệ", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Tìm kiếm vé", "Index", "Search", new { area = "" }, new { @class = "nav-link" })</li>
+                    @{
+                        if (!string.IsNullOrEmpty(Session[Const.USERIDSESSION]?.ToString()))
+                        {
+                            <li class="nav-item text-light"><a class="nav-link" href="#">@(Session[Const.USERNAMESESSION]?.ToString())</a></li>
+                            <li class="nav-item text-light"><a class="nav-link" href="@Url.Action("Logout", "Home")">Đăng Xuất</a></li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">@Html.ActionLink("Đăng Nhập", "Login", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    <div class="body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+
+</html>

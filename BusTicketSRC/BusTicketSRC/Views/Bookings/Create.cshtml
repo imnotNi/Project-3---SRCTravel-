@@ -1,0 +1,445 @@
+﻿@model BusTicketSRC.Models.Booking
+
+@{
+    ViewBag.Title = "Create";
+}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .table-container {
+        width: 100%;
+        max-width: 800px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h3 {
+        text-align: center;
+        color: #333;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+    .form-group {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+    .form-container {
+        border: 1px solid #c82333; /* Light blue border color */
+        padding: 50px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        background-color: #f0f8ff; /* Light red background color */
+    }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group .col-md-10 {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .form-group .col-md-4 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+
+        .form-group button {
+            color: #2e2703;
+            border: 2px solid #393939;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+            .form-group button:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+
+    .seat-booked {
+        background-color: red;
+        color: #fff;
+    }
+
+    .seat-buttons-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .seat-button {
+        margin: 5px;
+        flex: 0 0 calc(25% - 10px); /* 25% to have 4 columns, subtract margin */
+    }
+
+        .seat-button button {
+            width: 100%;
+        }
+
+        .seat-button.booked {
+            position: relative;
+        }
+
+            .seat-button.booked::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1;
+            }
+
+        .seat-button.booked {
+            position: relative;
+        }
+
+            .seat-button.booked::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1;
+            }
+    .btn-booking {
+        background-color: #3498db;
+        color: #ffffff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .btn-booking:hover {
+            background-color: #2980b9;
+            color: #ffffff;
+        }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-d0n8h0p+zz8fXAbZtXZU2xwMqatLoi+5A7f11mYdnp58wb0yF5wZQvwM6dsXpl1Mm9/rf6C1IwLjP5v0HsTvRw==" crossorigin="anonymous"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="form-container">
+                    <h3>Đặt Vé</h3>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.customer_name, "Tên Khách Hàng:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.customer_name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.customer_name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.phone, "Số Điện Thoại:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.trip_id, "Chuyến Xe:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.trip_id, (IEnumerable<SelectListItem>)ViewBag.DDLTripList, new { @class = "form-control", onchange = "updateDateTime()" })
+                            @Html.ValidationMessageFor(model => model.trip_id, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.departure_time, "Giờ Khởi Hành:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.departure_time, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.departure_time, "", new { @class = "text-danger" })
+                        </div>
+
+                        @Html.LabelFor(model => model.departure_day, "Ngày Khởi Hành:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.departure_day, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.departure_day, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.seat_number, "Ghế đã chọn:", htmlAttributes: new { @class = "control-label col-md-2" }) <br>
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.seat_number, new { htmlAttributes = new { @class = "form-control", id = "seat_number_input", @readonly = "readonly" } }) <br>
+                            @Html.ValidationMessageFor(model => model.seat_number, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.seat_number, new { id = "seat_number_input" })
+                        </div>
+                        <h4>Chọn ghế:</h4>
+                        <div class="seat-buttons-container">
+                            @{
+                                for (int i = 1; i <= 32; i++)
+                                {
+                                    <div class="seat-button">
+                                        <button type="button" class="btn btn-default" id="seatButton_@i" onclick="fillSeatNumber(@i)">
+                                            <span class="fa fa-chair"></span>
+                                        </button>
+                                    </div>
+                                    if (i % 4 == 0)
+                                    {
+                                    @:</div><div class="seat-buttons-container">
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.age, "Ngày Sinh:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.age, new { htmlAttributes = new { @class = "form-control", type = "date", id = "age" } })
+                            @Html.ValidationMessageFor(model => model.age, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.booking_price, "Giá:", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.booking_price, new { @class = "form-control", @readonly = "readonly" })
+                            
+                            @Html.ValidationMessageFor(model => model.booking_price, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="button" value="Đặt Vé" class="btn btn-default btn-booking" onclick="validateAndCreate()" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+          var selectedSeats = [];
+
+        function initializeSeatStatus() {
+            var tripId = $("#trip_id").val();
+
+            for (let i = 1; i <= 32; i++) {
+                $.ajax({
+                    url: "@Url.Action("IsSeatBooked", "Bookings")",
+                    type: "GET",
+                    data: { tripId: tripId, seatNumber: i },
+                    success: function (isBooked) {
+                        var seatButton = $("#seatButton_" + i);
+
+                        if (isBooked) {
+                            // If seat is booked, add a class to visually indicate it
+                            seatButton.addClass("seat-booked");
+                        }
+                    },
+                    error: function () {
+                        alert("Error checking seat availability for seat " + i);
+                    }
+                });
+            }
+        }
+
+        function fillSeatNumber(seatNumber) {
+            var tripId = $("#trip_id").val();
+
+            $.ajax({
+                url: "@Url.Action("IsSeatBooked", "Bookings")",
+                type: "GET",
+                data: { tripId: tripId, seatNumber: seatNumber },
+                success: function (isBooked) {
+                    var seatButton = $("#seatButton_" + seatNumber);
+
+                    if (isBooked) {
+                        // If seat is booked, add a class to visually indicate it
+                        seatButton.addClass("seat-booked");
+                    } else {
+                        var seatIndex = selectedSeats.indexOf(seatNumber);
+
+                        if (seatIndex === -1) {
+                            // Seat is not selected, add it to the list
+                            if (selectedSeats.length < 5) {
+                                selectedSeats.push(seatNumber);
+                                document.getElementById("seat_number_input").value = selectedSeats.join(', ');
+
+                                // Remove the "seat-booked" class from all buttons
+                                $(".seat-button").removeClass("seat-booked");
+
+                                // Add the "seat-booked" class to the selected seat button
+                                seatButton.addClass("seat-booked");
+                            } else {
+                                alert("You can only select up to 5 seats.");
+                            }
+                        } else {
+                            // Seat is already selected, remove it from the list
+                            selectedSeats.splice(seatIndex, 1);
+                            document.getElementById("seat_number_input").value = selectedSeats.join(', ');
+
+                            // Remove the "seat-booked" class from the deselected seat button
+                            seatButton.removeClass("seat-booked");
+                        }
+                    }
+                },
+                error: function () {
+                    alert("Error checking seat availability for seat " + seatNumber);
+                }
+            });
+        }
+           // Enable flatpickr for age
+        flatpickr("#age", {
+            dateFormat: "d/m/Y",   // Set the desired date format
+
+        });
+function validateAndCreate() {
+    // Check if phone number is entered
+    var phoneNumber = $("#phone").val();
+    if (!phoneNumber || phoneNumber.trim() === "") {
+        alert("Please enter a valid phone number.");
+        return;
+    }
+    // Kiểm tra xem tên và email có được nhập không
+    var customerName = $("#customer_name").val();
+    var email = $("#email").val();
+
+    if (!customerName || customerName.trim() === "") {
+        alert("Please enter a valid name.");
+        return;
+    }
+
+
+    // Check if seats are selected
+    if (selectedSeats.length === 0) {
+        alert("Please select at least one seat.");
+        return;
+    }
+
+    // Check if age is 6 or older
+    var age = calculateAge();
+    if (age < 6) {
+        alert("You must be at least 6 years old to proceed with the booking.");
+        return;
+    }
+
+    // If all validations pass, submit the form
+    $("form").submit();
+}
+
+function calculateAge() {
+    var birthdate = $("#age").val();
+    if (!birthdate) {
+        return 0; // If no birthdate is selected, return 0 age
+    }
+
+    var birthdateDate = new Date(birthdate);
+    var today = new Date();
+    var age = today.getFullYear() - birthdateDate.getFullYear();
+    return age;
+}
+
+  $(document).ready(function () {
+            initializeSeatStatus();
+
+            $("#age").change(function () {
+                calculateBookingPrice();
+            });
+
+            function calculateBookingPrice() {
+                var age = calculateAge();
+
+                if (age < 6) {
+                    // If age is less than 6, reset booking price and display an alert
+                    $("#booking_price").val("");
+                    alert("You can only book tickets when you are 6 years old or older!");
+                } else {
+                    // Calculate the booking price for ages 6 and older
+                    var tripId = $("#trip_id").val();
+                    $.ajax({
+                        url: "@Url.Action("GetTripPrice", "Bookings")",
+                        type: "GET",
+                        data: { tripId: tripId },
+                        success: function (price) {
+                            // Apply discount for age 6 to 12
+                            if (age >= 6 && age <= 12) {
+                                $("#booking_price").val(price * 0.5);
+                            }
+                            // Apply discount for age 50 and above
+                            else if (age >= 50) {
+                                $("#booking_price").val(price * 0.7);
+                            } else {
+                                $("#booking_price").val(price);
+                            }
+                        },
+                        error: function () {
+                            alert("Error fetching trip price.");
+                        }
+                    });
+                }
+            }
+
+    // Initialize date picker for birthdate
+    $("#age").flatpickr({
+        dateFormat: 'd/m/Y',
+        onClose: function (selectedDates, dateStr, instance) {
+            calculateBookingPrice();
+        }
+    });
+});
+
+</script>
+}

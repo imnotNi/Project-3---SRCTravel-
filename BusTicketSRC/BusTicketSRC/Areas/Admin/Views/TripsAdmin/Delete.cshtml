@@ -1,0 +1,81 @@
+﻿@model BusTicketSRC.Models.Trip
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Trip</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Bus Type:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Bus.bus_type)
+        </dd>
+
+        <dt>
+            Start Location:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.start_location)
+        </dd>
+
+        <dt>
+            End Location:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.end_location)
+        </dd>
+
+        <dt>
+            Distance:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.distance)
+        </dd>
+
+        <dt>
+            Departure Time:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.departure_time)
+        </dd>
+
+        <dt>
+            Departure Day:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.departure_day)
+        </dd>
+
+        <dt>
+            Price:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            Other Trip Details:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.other_trip_details)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,269 @@
+﻿body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4e8e5; /* Màu nền nâu trắng */
+}
+
+.form-control {
+    background-color: #fff; /* Màu nền trắng cho ô input */
+    border: 1px solid #3e2723; /* Viền nâu đậm cho ô input */
+    color: black; /* Màu chữ nâu đậm */
+    margin-bottom: 15px;
+}
+
+#container {
+    display: flex;
+}
+
+.sidebar {
+    background-color: #3e2723; /* Màu nâu đậm */
+    color: #ffffff;
+    width: 250px;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+    .sidebar h1 {
+        color: #ffffff;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+.nav-link {
+    display: block;
+    color: #3e2723; /* Màu nâu đậm */
+    background-color: #ffffff;
+    padding: 15px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+    .nav-link:hover {
+        background-color: #8d6e63; /* Màu nâu sáng khi hover */
+        color: #ffffff;
+    }
+
+.body-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar style */
+.navbar {
+    margin-bottom: 0;
+}
+
+/* Additional Styling for a Clean Look */
+body {
+    background-color: #f4e8e5;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.nav-link {
+    /* ... */
+    margin-bottom: 10px;
+}
+/* Thêm mã màu nâu trắng cho bảng */
+.table {
+    width: 100%;
+    margin: auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .table th {
+        background-color: #3e2723;
+        color: #fff;
+        padding: 15px;
+        text-align: left;
+    }
+
+    .table td {
+        border: 1px solid #ddd;
+        padding: 50px;
+        text-align: center;
+    }
+
+        .table td a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+
+        .table td .edit {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+
+        .table td .details {
+            background-color: #e67e22;
+            color: #fff;
+        }
+
+        .table td .delete {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        .table td a:hover {
+            opacity: 0.8;
+        }
+
+/* Thêm mã cho phần trên bảng */
+p {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.create-link {
+    background-color: #5cb85c;
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+    .create-link:hover {
+        background-color: #4cae4c;
+    }
+
+/* Màu nâu nhạt cho trang Edit */
+.form-horizontal {
+    background-color: #8d6e63; /* Màu nâu nhạt */
+    padding: 40px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: white; /* Màu chữ trang */
+}
+
+    .form-horizontal h4 {
+        color: white; /* Màu chữ nâu đậm cho tiêu đề */
+    }
+
+    .form-horizontal hr {
+        border-color: white; /* Màu chữ nâu đậm cho đường kẻ */
+    }
+
+.control-label {
+    color: #ffff; /* Màu chữ trang đậm cho nhãn */
+}
+
+
+
+.text-danger {
+    color: white; /* Màu đỏ cho thông báo lỗi */
+}
+
+.btn-default {
+    background-color: #e74c3c; /* Màu nâu đậm cho nút Create & Delete */
+    color: #fff; /* Màu chữ trắng */
+    border: 1px solid #fff; /* Viền trắng */
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .btn-default:hover {
+        background-color: #5d4037; /* Màu nâu đậm khi hover */
+        color: #ffff; /* Màu chữ trắng khi hover */
+    }
+
+
+
+/* Bảng cho trang Edit */
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .table th, .table td {
+        border: 1px solid #ffff; /* Viền trắng cho cột và dòng */
+        padding: 12px;
+        text-align: center;
+    }
+
+    .table th {
+        background-color: #5d4037; /* Màu nâu đậm cho tiêu đề cột */
+        color: #fff; /* Màu chữ trắng cho tiêu đề cột */
+    }
+
+    .table td {
+        background-color: #8d6e63; /* Màu nâu đậm cho nội dung ô */
+        color: #fff; /* Màu chữ trắng cho nội dung ô */
+    }
+
+        .table td a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            background-color: #fff; /* Màu nền trắng cho liên kết trong ô */
+        }
+
+            .table td a:hover {
+                opacity: 0.8;
+            }
+/* Liên kết "Back to List" */
+a.back-to-list {
+    color: #4e342e; /* Màu nâu đậm cho liên kết */
+    background-color: #fff; /* Màu nền trắng */
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 3px;
+    border: 1px solid #3e2723; /* Viền nâu đậm */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    a.back-to-list:hover {
+        background-color: #e0e0e0; /* Màu xám nhạt khi hover */
+        color: #4e342e; /* Màu nâu đậm khi hover */
+    }
+/*Bảng Save*/
+.btn-save {
+    background-color: #e74c3c; /* Màu nâu đậm cho nút Save */
+    color: #fff; /* Màu chữ trắng */
+    border: 1px solid #fff; /* Viền trắng */
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .btn-save:hover {
+        background-color: #4e342e; /* Màu nâu đậm khi hover */
+    }
+/* CSS cho đoạn mã ActionLink "Edit" */
+a.edit-link {
+    background-color: red; /* Màu nền cho liên kết "Edit" */
+    color: #fff; /* Màu chữ cho liên kết "Edit" */
+    padding: 10px 15px; /* Kích thước padding */
+    text-decoration: none; /* Loại bỏ gạch chân */
+    border-radius: 3px; /* Bo tròn góc */
+    transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển đổi màu */
+}
+
+    a.edit-link:hover {
+        background-color: #27ae60; /* Màu nền khi hover */
+        color: #fff; /* Màu chữ khi hover */
+    }

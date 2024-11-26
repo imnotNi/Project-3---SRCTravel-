@@ -1,0 +1,443 @@
+﻿@model List<BusTicketSRC.Models.Trip>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    #searchForm {
+        display: flex;
+        align-items: center;
+    }
+
+    label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .select-container {
+        position: relative;
+    }
+
+        .select-container select {
+            width: 200px;
+            padding: 10px;
+            border: none;
+            border-bottom: 2px solid #007bff;
+            border-radius: 0;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-bottom-color 0.3s ease;
+        }
+
+            .select-container select:focus {
+                border-bottom-color: #0056b3;
+            }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: 2px solid #007bff;
+        border-radius: 4px;
+        padding: 10px 15px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+    .table-container {
+        width: 80%;
+        margin: 20px auto 0;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+    .btn-primary {
+        padding: 8px 12px;
+    }
+    .table-frame {
+        border: 2px solid #ddd; /* Add your desired border color */
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #f0f8ff; /* Light blue background color */
+    }
+
+        .table-frame th, .table-frame td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table-frame th {
+            background-color: #add8e6; /* Light blue background color for header */
+        }
+
+        .table-frame tr:hover {
+            background-color: #e0f7fa; /* Light blue background color on hover */
+        }
+    .book-now-link {
+        display: inline-block;
+        padding: 10px 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: 2px solid #007bff;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .book-now-link:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            transform: translateY(-2px); /* Add a slight lift effect on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<div class="form-container">
+    <form id="searchForm" action="@Url.Action("Index", "Home")" method="get" onsubmit="return validateSearchForm()">
+        <div class="select-container">
+            <label for="start_locationSearch">Điểm Khởi Hành:</label>
+            <select class="form-control" id="start_locationSearch" name="start_locationSearch">
+                <option value="">Chọn điểm khởi hành</option>
+                @if (ViewBag.Start_locationOptions != null)
+                {
+                    foreach (var start_locationOption in ViewBag.Start_locationOptions)
+                    {
+                        <option value="@start_locationOption">@start_locationOption</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="select-container">
+            <label for="end_locationSearch">Điểm Đến:</label>
+            <select class="form-control" id="end_locationSearch" name="end_locationSearch">
+                <option value="">Chọn điểm đến</option>
+                @if (ViewBag.Start_locationOptions != null)
+                {
+                    foreach (var end_locationOption in ViewBag.End_locationOptions)
+                    {
+                        <option value="@end_locationOption">@end_locationOption</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="select-container">
+            <label for="departure_daySearch">Ngày Khởi Hành:</label>
+            <input type="text" class="form-control" id="departure_daySearch" name="departure_daySearch">
+        </div>
+        <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
+    </form>
+</div>
+<script>
+    flatpickr("#departure_daySearch", {
+        dateFormat: "d/m/Y",  // Định dạng ngày/tháng/năm
+    });
+
+    function validateSearchForm() {
+        var start_locationValue = document.getElementById("start_locationSearch").value.trim();
+        var end_locationValue = document.getElementById("end_locationSearch").value.trim();
+        var departure_dayValue = document.getElementById("departure_daySearch").value.trim();
+
+        if (start_locationValue === "" && end_locationValue === "" && departure_dayValue === "") {
+            alert("Please select values for source, destination, and departure day.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+<div class="table-container">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table-frame">
+            <tr>
+
+                <th>Khởi Hành </th>
+                <th>Điểm Đến </th>
+                <th>Loại Xe</th>
+                <th>Ngày Khởi Hành</th>
+                <th>Giờ Khởi Hành</th>
+                <th>Giá</th>
+                <th>Dung Tích Xe</th>
+                <th>Đặt Vé</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+
+                    <td>@item.start_location</td>
+                    <td>@item.end_location</td>
+                    <td>@item.Bus.bus_type</td>
+                    <td>@item.departure_day</td>
+                    <td>@item.departure_time</td>
+                    <td>@item.Price$</td>
+                    <td>
+                        @ViewData[$"AvailableSeatsForTrip_{item.trip_id}"]
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Đặt Vé", "Create", "Bookings", new { tripId = item.trip_id, busId = item.bus_id, departureTime = item.departure_time, departureDay = item.departure_day }, new { @class = "book-now-link" })
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>Không tìm thấy dữ liệu.</p>
+    }
+</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Book Your Ride</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffff;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .hero-section {
+            background-image: url('cityscape.jpg');
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+            .hero-content h2 {
+                font-size: 36px;
+            }
+
+            .hero-content p {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff4500;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .services-section {
+            text-align: center;
+            padding: 50px 100px;
+        }
+
+        .service-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: left; /* Có thể thay đổi giữa space-around, space-evenly, hoặc flex-start tùy thuộc vào ý muốn */
+        }
+
+        .service-card {
+            width: calc(28%); /* 20px là margin giữa các thẻ */
+            margin: 10px; /* Thay đổi giữa margin-bottom hoặc margin-right tùy thuộc vào ý muốn */
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+            .service-card:hover {
+                transform: scale(1.05);
+            }
+
+        .feature {
+            text-align: center;
+            padding: 50px 100px;
+        }
+
+            .feature h2 {
+                margin-bottom: 10px;
+                font-size: 28px;
+                color: rgb(0, 255, 0);
+            }
+
+        .feature-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .feature-left {
+            flex: 0 0 calc(70% - 20px); /* 70% width with a 20px margin */
+            max-width: calc(70% - 20px);
+        }
+
+        .feature-right {
+            flex: 0 0 calc(30% - 20px); /* 30% width with a 20px margin */
+            max-width: calc(30% - 20px);
+        }
+
+            .feature-right img {
+                max-width: 90%;
+            }
+
+        .feature-item {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: left;
+        }
+
+            .feature-item .feature-text {
+                margin-left: 30px;
+                text-align: left;
+            }
+
+            .feature-item img {
+                border-radius: 50%; /* Make the image rounded */
+                margin-bottom: 15px;
+                max-width: 80px;
+                max-height: 80px;
+            }
+
+        .feature-text h3 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+            .feature-text h3 span {
+                font-size: 16px;
+            }
+
+        .feature-text p {
+            font-size: 14px;
+            color: #777;
+        }
+
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="feature">
+        <div class="feature-title">
+            <h2>SRC TRAVEL - CHẤT LƯỢNG LÀ DANH DỰ</h2>
+            <p>Được khách hàng tin tưởng và lựa chọn</p>
+        </div>
+        <div class="feature-content">
+            <div class="feature-left">
+                <div class="feature-item">
+                    <img src="~/IMG/anh7.jpg" alt="Hình Ảnh Đặc Trưng">
+                    <div class="feature-text">
+                        <h3>
+                            Hơn 20 triệu <span> Khách hàng</span>
+                        </h3>
+                        <p>SRC Travel phục vụ hơn 20 triệu lượt khách hàng mỗi năm trên khắp các tỉnh miền Tây của Việt Nam</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <img src="~/IMG/anh9.jpg" alt="Hình Ảnh Đặc Trưng">
+                    <div class="feature-text">
+                        <h3>Hơn 50 <span>Điểm bán vé</span></h3>
+                        <p>SRC Travel có hơn 50 văn phòng bán vé, trạm trung chuyển, bến xe,... trên toàn hệ thống</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <img src="~/IMG/anh10.jpg" alt="Hình Ảnh Đặc Trưng">
+                    <div class="feature-text">
+                        <h3>Hơn 100 <span>Chuyến xe</span></h3>
+                        <p>
+                            SRC Travel phục vụ hơn 100 chuyến xe đường dài và liên tỉnh mỗi ngày
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="feature-right">
+                <img src="~/IMG/anh11.jpg" alt="Hình Ảnh Đặc Trưng">
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

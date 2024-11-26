@@ -1,0 +1,192 @@
+﻿
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white; /* Màu nền trắng */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex; /* Sử dụng flexbox */
+            flex-direction: column; /* Chỉ định hướng dọc cho flex container */
+            align-items: center; /* Căn giữa theo chiều ngang */
+        }
+
+        header {
+            background: white;
+            color: #333;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #bbb 1px solid;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            header h1 {
+                margin: 0;
+                font-size: 36px;
+                color: #333;
+                text-transform: uppercase;
+            }
+
+            header p {
+                font-size: 18px;
+                color: #666;
+            }
+
+        .contact-wrapper {
+            display: flex; /* Sử dụng flexbox */
+            flex-wrap: wrap; /* Cho phép các mục bọc sang dòng tiếp theo nếu cần */
+            justify-content: space-between; /* Cách đều các phần tử bên trong */
+            max-width: 800px; /* Giới hạn chiều rộng tối đa của contact-wrapper */
+            width: 100%; /* Chiếm toàn bộ chiều rộng của flex container */
+        }
+
+        .contact-info,
+        .contact-form {
+            flex: 1; /* Làm cho cả hai phần trở nên linh hoạt, với chiều rộng bằng nhau */
+            box-sizing: border-box;
+            padding: 20px;
+            background: #ffff;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .contact-info h2,
+            .contact-info p {
+                text-align: left; /* Căn trái nội dung trong .contact-info */
+            }
+
+            .contact-info p {
+                font-size: 18px;
+                line-height: 1.6em;
+                color: #666;
+                font-weight: bold; /* Đậm chữ */
+            }
+
+            .contact-form form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .contact-form label {
+                margin-bottom: 10px;
+                color: #666;
+                font-weight: bold; /* Đậm chữ */
+            }
+
+            .contact-form input,
+            .contact-form textarea {
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid #bbb;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+
+            .contact-form button {
+                background: #333;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h2>Liên hệ với chúng tôi !</h2>
+            <p>Hãy thoải mái liên hệ với chúng tôi.!</p>
+        </header>
+        <div id="success-message" style="display: none; color: green; margin-bottom: 10px;">Message sent successfully!</div>
+        <!-- Contact Wrapper -->
+        <div class="contact-wrapper">
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <h2>Thông tin liên hệ</h2>
+                <p><strong>Địa chỉ:</strong> Ninh Kieu, Can Tho, Viet Nam</p>
+                <p><strong>SĐT:</strong> 085302xxxx</p>
+                <p><strong>Email:</strong> MoNi@gmail.com</p>
+                <img src="~/IMG/anh3.png">
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form">
+                <h2>Nội dung liên hệ</h2>
+
+
+                <form id="contact-form" action="#" method="post">
+                    <label for="name">Họ Tên:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="subject">Chủ đề:</label>
+                    <input type="text" id="subject" name="subject" required>
+
+                    <label for="message">Nội dung:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+
+                    <button type="submit">Gửi </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var contactForm = document.getElementById("contact-form");
+        var successMessage = document.getElementById("success-message");
+
+        contactForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Ngăn chặn form submit mặc định
+
+            // Ở đây bạn có thể thêm logic để gửi dữ liệu form đến server (nếu cần)
+
+            // Hiển thị thông báo thành công với hiệu ứng
+            successMessage.style.display = "block";
+            successMessage.style.opacity = 1;
+
+            // Tùy chỉnh thời gian hiển thị thông báo (ví dụ: 3 giây)
+            setTimeout(function () {
+                fadeOut(successMessage);
+            }, 3000);
+
+            // Đặt các trường nhập về giá trị rỗng hoặc có thể làm các xử lý khác nếu cần
+            contactForm.reset();
+        });
+
+        // Hàm để làm mờ dần thông báo
+        function fadeOut(element) {
+            var opacity = 1;
+            var timer = setInterval(function () {
+                if (opacity <= 0.1) {
+                    clearInterval(timer);
+                    element.style.display = 'none';
+                }
+                element.style.opacity = opacity;
+                opacity -= opacity * 0.1;
+            }, 50);
+        }
+    });
+</script>

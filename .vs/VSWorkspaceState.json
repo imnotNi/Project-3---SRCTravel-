@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\BusTicketSRC",
+    "\\BusTicketSRC\\BusTicketSRC",
+    "\\BusTicketSRC\\BusTicketSRC\\Areas",
+    "\\BusTicketSRC\\BusTicketSRC\\Areas\\Admin",
+    "\\BusTicketSRC\\BusTicketSRC\\Areas\\Admin\\Views",
+    "\\BusTicketSRC\\BusTicketSRC\\Areas\\Admin\\Views\\BookingsAdmin",
+    "\\BusTicketSRC\\BusTicketSRC\\Views",
+    "\\BusTicketSRC\\BusTicketSRC\\Views\\Bookings",
+    "\\BusTicketSRC\\BusTicketSRC\\Views\\Home"
+  ],
+  "SelectedNode": "\\BusTicketSRC\\BusTicketSRC\\Views\\Bookings\\Create.cshtml",
+  "PreviewInSolutionExplorer": false
+}

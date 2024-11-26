@@ -1,0 +1,155 @@
+﻿@model BusTicketSRC.ViewModel.RegisterModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Register</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/favicon.ico">
+    <!-- Core css -->
+    <link rel="stylesheet" href="~/Content/Adminassets/css/app.min.css">
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <div class="app">
+        <div class="container-fluid p-0 h-100">
+            <div class="row no-gutters h-100 full-height">
+                <div class="col-lg-4 d-none d-lg-flex bg" style="background-image: url('/Content/Adminassets/images/others/sign-up-1.jpg')">
+                    <div class="d-flex h-100 p-h-40 p-v-15 flex-column justify-content-between">
+                        <div>
+                            
+                        </div>
+                        <div>
+                            <h1 class="text-white m-b-20 font-weight-normal">Exploring Enlink</h1>
+                            <p class="text-white font-size-16 lh-2 w-80 opacity-08">Climb leg rub face on everything give attitude nap all day for under the bed. Chase mice attack feet but rub face on everything hopped up.</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-white">© 2024 Vietnam</span>
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <a class="text-white text-link" href="">Legal</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="text-white text-link" href="">Privacy</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 bg-white" style="font-size:0.9em">
+                    <div class="container h-100">
+                        <div class="row no-gutters h-100 align-items-center">
+                            <div class="col-md-8 col-lg-7 col-xl-6 mx-auto">
+                                <h2>Register</h2>
+                                <p class="m-b-30">Tạo tài khoản </p>
+                                <form action="@Url.Action("Register", "Home")" method="post">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                    <div class="form-group">
+                                        <label class="font-weight-semibold" for="username">Tên đăng nhập :</label>
+                                        @Html.EditorFor(model => model.Username, "", new { htmlAttributes = new { @class = "form-control", @type = "name", @placeholder = "User Name", @required = "required" } })
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-semibold" for="username">Số điện thoại :</label>
+                                        @Html.EditorFor(model => model.Phone, "", new { htmlAttributes = new { @class = "form-control", @type = "tel", @placeholder = "Your Phone", @required = "required" } })
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-semibold" for="phone">Email:</label>
+                                        @Html.EditorFor(model => model.Email, "", new { htmlAttributes = new { @class = "form-control", @type = "email", @placeholder = "Email", @required = "required" } })
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-semibold" for="password">Mật khẩu :</label>
+                                        @Html.EditorFor(model => model.Password, "", new { htmlAttributes = new { @class = "form-control", @type = "password", @placeholder = "Password", @required = "required" } })
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-semibold" for="confirmPassword">Nhập lại mật khẩu:</label>
+                                        @Html.EditorFor(model => model.ConfirmPassword, "", new { htmlAttributes = new { @class = "form-control", @type = "password", @placeholder = "Confirm Password", @required = "required" } })
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="d-flex align-items-center justify-content-between p-t-15">
+                                            <div class="checkbox">
+                                                <input id="checkbox" type="checkbox">
+                                                <label for="checkbox"><span>Tôi đồng ý <a href="javascript:void(0);">các điều khoản sử dụng</a></span></label>
+                                            </div>
+                                            <button class="btn btn-primary">Đăng Ký</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Core Vendors JS -->
+    <input type="hidden" id="success" value="@TempData["success"]" />
+    <input type="hidden" id="info" value="@TempData["info"]" />
+    <input type="hidden" id="warning" value="@TempData["warning"]" />
+    <input type="hidden" id="error" value="@TempData["error"]" />
+
+    <input type="hidden" id="subsuccess" value="@TempData["subsuccess"]" />
+    <input type="hidden" id="subinfo" value="@TempData["subinfo"]" />
+    <input type="hidden" id="subwarning" value="@TempData["subwarning"]" />
+    <input type="hidden" id="suberror" value="@TempData["suberror"]" />
+    <!-- page js -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script>
+        $(document).ready(function () {
+            $("#forgotPasswordLink").click(function (e) {
+                // Lấy giá trị từ input username
+                var usernameValue = $("#username").val();
+
+                // Chuyển hướng URL với giá trị username
+                window.location.href = "@Url.Action("ChangePassword", "Account")?userName=" + usernameValue;
+            });
+            toastr.options = {
+                "closeButton": true
+            };
+            $('.carousel').carousel({
+                interval: 3000
+            });
+        });
+        $(function () {
+            if ($('#success').val()) {
+                displayMessage($('#success').val(), $('#subsuccess').val(), 'success');
+            }
+            if ($('#info').val()) {
+                displayMessage($('#info').val(), $('#subinfo').val(), 'info');
+            }
+            if ($('#warning').val()) {
+                displayMessage($('#warning').val(), $('#subwarning').val(), 'warning');
+            }
+            if ($('#error').val()) {
+                displayMessage($('#error').val(), $('#suberror').val(), 'error');
+            }
+        });
+        var displayMessage = function (title, subTitle, msgType) {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-right",
+                "onClick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "8000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr[msgType](subTitle, title);
+        };
+    </script>
+</body>
+</html>

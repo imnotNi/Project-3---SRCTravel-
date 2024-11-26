@@ -1,0 +1,100 @@
+﻿@model BusTicketSRC.Models.Booking
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Booking</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Ticket Status:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ticket.ticket_status)
+        </dd>
+
+        <dt>
+            Bus Trip:
+        </dt>
+
+        <dd>
+            @($"{Model.Trip.start_location} to {Model.Trip.end_location}")
+        </dd>
+
+        <dt>
+            Customer Name:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.customer_name)
+        </dd>
+
+        <dt>
+            Phone Number:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone)
+        </dd>
+
+
+        <dt>
+            Booking Date:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.booking_date)
+        </dd>
+
+        <dt>
+            Departure Day:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.departure_day)
+        </dd>
+
+        <dt>
+            Departure Time:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.departure_time)
+        </dd>
+
+        <dt>
+            Seat Number:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.seat_number)
+        </dd>
+
+        <dt>
+            Birth Day:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.age)
+        </dd>
+
+        <dt>
+            Booking Price:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.booking_price)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.booking_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

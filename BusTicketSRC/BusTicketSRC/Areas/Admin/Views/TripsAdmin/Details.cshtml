@@ -1,0 +1,75 @@
+﻿@model BusTicketSRC.Models.Trip
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Trip</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Bus Type:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Bus.bus_type)
+        </dd>
+
+        <dt>
+            Start Location:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.start_location)
+        </dd>
+
+        <dt>
+            End Location:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.end_location)
+        </dd>
+
+        <dt>
+            Distance:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.distance)
+        </dd>
+
+        <dt>
+            Departure Time:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.departure_time)
+        </dd>
+
+        <dt>
+            Departure Day:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.departure_day)
+        </dd>
+
+        <dt>
+            Price:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            Other Trip Details:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.other_trip_details)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.trip_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

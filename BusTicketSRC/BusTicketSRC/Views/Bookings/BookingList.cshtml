@@ -1,0 +1,246 @@
+﻿@model List<BusTicketSRC.Models.Booking>
+
+<h2>Thanh toán</h2>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        color: #495057;
+        margin: 20px;
+    }
+
+    h2 {
+        color: #495057;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #dee2e6;
+        padding: 6px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #79dec7;
+        color: black;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    div {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    strong {
+        color: #dc3545;
+        font-size: 18px;
+    }
+
+    buton {
+        text-align: center;
+    }
+
+    .qr-code-container {
+        display: flex;
+        justify-content: center;
+    }
+    #generateQRCodeBtn {
+        padding: 8px 12px; /* Giảm padding */
+        background-color: #28a745; /* Màu nền của nút */
+        color: #fff; /* Màu chữ của nút */
+        border: none; /* Loại bỏ đường viền */
+        border-radius: 4px; /* Góc bo tròn */
+        cursor: pointer; /* Đổi con trỏ khi hover */
+        height: 30px; /* Chiều cao của nút */
+        font-size: 14px; /* Giảm font-size */
+    }
+
+        #generateQRCodeBtn:hover {
+            background-color: #0056b3; /* Màu nền khi hover */
+        }
+
+    .pay-button {
+        text-decoration: none; /* Xóa bỏ gạch chân */
+        padding: 8px 12px; /* Giảm padding */
+        background-color: #28a745; /* Màu nền của nút */
+        color: #fff; /* Màu chữ của nút */
+        border: none; /* Loại bỏ đường viền */
+        border-radius: 4px; /* Góc bo tròn */
+        cursor: pointer; /* Đổi con trỏ khi hover */
+        height: 30px; /* Chiều cao của nút */
+        font-size: 11px; /* Giảm font-size */
+    }
+
+        .pay-button:hover {
+            background-color: #0056b3; /* Màu nền khi hover */
+        }
+
+
+</style>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên Khách Hàng </th>
+
+            <th>Số điện thoại</th>
+            <th>Chuyến</th>
+            <th>Tuổi</th>
+            <th>Giờ khởi hành </th>
+            <th>Ngày khởi hành</th>
+            <th>Số ghế </th>
+            <th>Giá </th>
+            <th>Đặt vé</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            decimal totalPrice = 0; // Variable to store the total price
+            HashSet<string> uniqueCombos = new HashSet<string>(); // HashSet to track unique combinations
+        }
+        @foreach (var booking in Model)
+        {
+            var combo = $"{booking.trip_id}_{booking.seat_number}";
+            if (uniqueCombos.Add(combo))
+            {
+                <tr>
+                    <td>@booking.customer_name</td>
+
+                    <td>@booking.phone</td>
+                    <td>@($"{ViewBag.db.Trips.Find(booking.trip_id).start_location} to {ViewBag.db.Trips.Find(booking.trip_id).end_location}")</td>
+                    <td>@booking.age</td>
+                    <td>@booking.departure_time</td>
+                    <td>@booking.departure_day</td>
+                    <td>@booking.seat_number</td>
+                    <td>@booking.booking_price</td>
+                    <td>
+                        <button class="cancelBtn" data-trip-id="@booking.trip_id" data-seat-number="@booking.seat_number">Hủy vé</button>
+                    </td>
+                    @{
+                        totalPrice += Convert.ToDecimal(booking.booking_price);
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<div>
+    <strong>Tổng Tiền : @totalPrice</strong>
+</div>
+<div class="qr-code-container" id="qrcode"></div><div id="countdown"></div>
+
+@Html.ActionLink("Thanh toán", "Pay", null, new { id = "payBtn", @class = "pay-button" })
+<button id="generateQRCodeBtn">Quét mã để thanh toán </button>
+
+
+<!-- Container for displaying the QR code and countdown -->
+<!-- Script section for QR code generation and countdown -->
+@section scripts {
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        function generateQRCode() {
+            // Disable the button during the countdown
+            document.getElementById("generateQRCodeBtn").disabled = true;
+
+            var qrCode = new QRCode(document.getElementById("qrcode"), {
+                width: 128,
+                height: 128
+            });
+
+            var paymentInfo = "Total Price: " + @totalPrice;
+            qrCode.makeCode(paymentInfo);
+
+            // Set the countdown duration in seconds (5 minutes = 300 seconds)
+            var countdownDuration = 300;
+            var countdownDisplay = document.getElementById("countdown");
+
+            function updateCountdown() {
+                var minutes = Math.floor(countdownDuration / 60);
+                var seconds = countdownDuration % 60;
+                countdownDisplay.innerHTML = "Time remaining: " + minutes + "m " + seconds + "s";
+
+                if (countdownDuration > 0) {
+                    countdownDuration--;
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownDisplay.innerHTML = "Time expired!";
+
+                    // Re-enable the button after the countdown reaches zero
+                    document.getElementById("generateQRCodeBtn").disabled = false;
+
+                    // Show a message when the countdown expires
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Time expired!',
+                        text: 'Please generate a new QR code.',
+                        timer: 3000
+                    });
+                }
+            }
+
+            // Initial update
+            updateCountdown();
+
+            // Update the countdown every second
+            var countdownInterval = setInterval(updateCountdown, 1000);
+        }
+
+        document.getElementById("generateQRCodeBtn").addEventListener("click", generateQRCode);
+
+        $(".cancelBtn").on("click", function () {
+            var tripId = $(this).data("trip-id");
+            var seatNumber = $(this).data("seat-number");
+
+            // Store the reference to the button
+            var cancelButton = $(this);
+
+            // Perform an AJAX request to the server to cancel the booking in the session
+            $.ajax({
+                url: "@Url.Action("CancelBooking", "Bookings")",
+                type: "POST",
+                data: { tripId: tripId, seatNumber: seatNumber },
+                success: function () {
+                    // Remove the row from the table using the stored button reference
+                    cancelButton.closest("tr").remove();
+
+                    // Show a success message after canceling the booking
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Booking cancelled successfully!',
+                        timer: 3000
+                    });
+                },
+                error: function () {
+                    // Show an error message if there is an issue canceling the booking
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error cancelling booking.',
+                        timer: 3000
+                    });
+                }
+            });
+        });
+
+        $("#payBtn").on("click", function () {
+            // ... (existing code for payment)
+
+            // Show a success message after successful payment
+            Swal.fire({
+                icon: 'success',
+                title: 'Payment successful!',
+                timer: 3000
+            });
+        });
+    </script>
+}

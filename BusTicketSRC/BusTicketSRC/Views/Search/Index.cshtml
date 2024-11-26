@@ -1,0 +1,167 @@
+﻿@model List<BusTicketSRC.Models.Booking>
+<br >
+<h3>Tìm kiếm vé của bạn</h3>
+<form id="searchForm" action="@Url.Action("Index", "Search")" method="get" onsubmit="return validateSearchForm()">
+    <label for="search" class="mx-2 my-1">Tìm kiếm</label>
+    <input type="search"
+           class="form-control w-auto"
+           id="search"
+           name="search"
+           placeholder="Số Điện Thoại" />
+    <button type="submit" class="btn btn-primary mx-2">OK</button>
+</form>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <tr>
+            <th>Trạng thái vé </th>
+            <th>Chuyến </th>
+            <th>Tên Khách Hàng </th>
+            <th>Số điện thoại </th>
+
+            <th>Ngày Đặt Vé </th>
+            <th>Ngày khởi Hành </th>
+            <th>Giờ khởi hành </th>
+            <th>Số Ghế </th>
+            <th>Ngày Sinh</th>
+            <th>Giá </th>
+            <th>Hoạt Động </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ticket.ticket_status)
+                </td>
+                <td>
+                    @(item.Trip.start_location + " to " + item.Trip.end_location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.customer_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.phone)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.booking_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Trip.departure_day)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Trip.departure_time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.seat_number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.booking_price)
+                </td>
+                <td>
+                    @Html.ActionLink("Hủy", "Delete", new { id = item.booking_id }, new { @class = "cancel-ticket-link" })
+                </td>
+
+            </tr>
+        }
+    </table>
+}
+else if (Model != null)
+{
+    <p>Không tìm thấy dữ liệu.</p>
+}
+else
+{
+    <p>Dữ liệu trống .</p>
+}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5; /* Light gray background */
+        margin: 0;
+        padding: 0;
+    }
+
+    h3 {
+        color: #333;
+        text-align: center;
+        margin-top: 20px; /* Add some top margin */
+    }
+
+    form {
+        margin-bottom: 20px; /* Increase the bottom margin for better spacing */
+        text-align: center;
+    }
+
+    label {
+        margin-right: 10px;
+        text-align: center;
+    }
+
+    input {
+        padding: 10px; /* Increase padding for better input field appearance */
+        border: 1px solid #ccc; /* Add a light border to the input */
+        border-radius: 5px; /* Add some border radius */
+        width: 200px; /* Set a fixed width for better alignment */
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #007bff; /* Primary button color */
+        color: #fff; /* Button text color */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3; /* Darker color on hover */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px; /* Increase top margin for better separation from the form */
+    }
+
+    th, td {
+        border: 1px solid #25f70a;
+        padding: 12px; /* Increase padding for better table cell appearance */
+        text-align: left;
+    }
+
+    th {
+        background-color: #007bff;
+        color: #fff; /* Text color for table header */
+    }
+
+    p {
+        color: #777;
+        margin-top: 20px;
+        text-align: center; /* Center align the text */
+    }
+
+    .btn {
+        cursor: pointer;
+    }
+    .cancel-ticket-link {
+        text-decoration: none; /* Loại bỏ gạch chân */
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #dc3545; /* Màu nền của nút hủy vé */
+        color: #fff; /* Màu văn bản trắng */
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+        cursor: pointer;
+    }
+
+        .cancel-ticket-link:hover {
+            background-color: #bd2130; /* Màu nền tối hơn khi di chuột qua */
+        }
+
+</style>
